@@ -15,6 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// モデル名を読みやすい形式に変換
+function formatModelName(modelId) {
+    const modelNames = {
+        'gemma2:2b': '🔹 Gemma 2B (軽量・高速)',
+        'llama3.2:3b': '🦙 Llama 3.2 3B (汎用)',
+        'llama3.2:1b': '🦙 Llama 3.2 1B (超軽量)',
+        'qwen2.5:3b': '🌟 Qwen 2.5 3B (日本語)',
+        'qwen2.5:7b': '🌟 Qwen 2.5 7B (高性能)',
+        'codellama:7b': '💻 CodeLlama 7B (コード)',
+        'mistral:7b': '⚡ Mistral 7B (高性能)',
+        'phi3:mini': '🧠 Phi 3 Mini (効率的)',
+    };
+    return modelNames[modelId] || modelId;
+}
+
 // モデルリストを取得
 async function loadModels() {
     try {
@@ -24,14 +39,24 @@ async function loadModels() {
         const select = document.getElementById('model-select');
         select.innerHTML = '';
 
+        if (data.models.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'モデルがありません';
+            select.appendChild(option);
+            return;
+        }
+
         data.models.forEach(model => {
             const option = document.createElement('option');
             option.value = model;
-            option.textContent = model;
+            option.textContent = formatModelName(model);
             select.appendChild(option);
         });
     } catch (error) {
         console.error('モデルリストの取得に失敗:', error);
+        const select = document.getElementById('model-select');
+        select.innerHTML = '<option value="">エラー: モデル取得失敗</option>';
     }
 }
 

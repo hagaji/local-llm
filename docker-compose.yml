@@ -22,6 +22,9 @@ services:
       - OLLAMA_FLASH_ATTENTION=true     # Flash Attention有効化（高速化）
       - OLLAMA_GPU_OVERHEAD=0           # GPU VRAM予約を最小化
       - OLLAMA_KEEP_ALIVE=5m            # モデルをメモリに保持する時間
+      # 追加モデルの指定（オプション）
+      # 必要に応じてコメントアウトを外して使用
+      # - EXTRA_MODELS=codellama:7b mistral:7b
     restart: unless-stopped
     # リソース制限（必要に応じて調整）
     deploy:

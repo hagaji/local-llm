@@ -95,16 +95,59 @@ print(response['message']['content'])
 - `ollama serve` - APIサーバーを手動で起動（既に自動起動中）
 - `brew services stop ollama` - Ollamaサービスを停止
 
-## 推奨モデル
+## 利用可能なモデル
 
-- **gemma2:2b** (現在インストール済み) - 軽量、高速
-- **llama3.2:3b** - より高性能な小型モデル
-- **qwen2.5:7b** - 日本語に強いモデル
-- **codellama:7b** - コード生成特化
+### デフォルトでインストールされるモデル
 
-新しいモデルをダウンロード：
+Docker起動時に自動的にダウンロードされます：
+
+- **gemma2:2b** (約1.6GB) - 軽量、高速、汎用性が高い
+- **llama3.2:3b** (約2GB) - Meta製、汎用性に優れる
+- **qwen2.5:3b** (約2.2GB) - 多言語・日本語対応が強い
+
+### 追加で試せるモデル
+
+#### 軽量モデル（8GB RAM以下）
 ```bash
-ollama pull llama3.2:3b
+ollama pull llama3.2:1b        # 超軽量（700MB）
+ollama pull phi3:mini          # Microsoft製（2.3GB）
+```
+
+#### 中規模モデル（16GB RAM推奨）
+```bash
+ollama pull qwen2.5:7b         # 日本語に強い（4.7GB）
+ollama pull mistral:7b         # 高性能（4.1GB）
+ollama pull codellama:7b       # コード生成特化（3.8GB）
+```
+
+### モデルの管理
+
+```bash
+# インストール済みモデル一覧
+ollama list
+
+# 新しいモデルをダウンロード
+ollama pull <model-name>
+
+# モデルを削除
+ollama rm <model-name>
+
+# モデルの詳細情報
+ollama show <model-name>
+```
+
+### 追加モデルをDocker起動時にダウンロード
+
+`docker-compose.yml`の環境変数を編集：
+```yaml
+environment:
+  - EXTRA_MODELS=codellama:7b mistral:7b
+```
+
+その後、コンテナを再起動：
+```bash
+docker-compose down
+docker-compose up -d
 ```
 
 ## サービス管理
