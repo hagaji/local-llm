@@ -24,6 +24,7 @@ function formatModelName(modelId) {
         'qwen2.5:3b': '🌟 Qwen 2.5 3B (日本語推奨)',
         'qwen2.5:7b': '🌟 Qwen 2.5 7B (高性能)',
         'qwen2.5:14b': '🌟 Qwen 2.5 14B (日本語特化)',
+        'elyza-jp-8b': '🇯🇵 ELYZA Llama-3 8B (日本語特化)',
         'codellama:7b': '💻 CodeLlama 7B (コード)',
         'mistral:7b': '⚡ Mistral 7B (高性能)',
         'phi3:mini': '🧠 Phi 3 Mini (効率的)',

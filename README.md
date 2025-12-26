@@ -105,8 +105,44 @@ Docker起動時に自動的にダウンロードされます：
 - **llama3.2:3b** (約2GB) - Meta製、汎用性に優れる
 - **qwen2.5:3b** (約2.2GB) - 多言語・日本語対応が強い（日本語推奨）
 
-> **注意:** ELYZAモデルは現在Ollamaの公式ライブラリには含まれていません。
-> 日本語タスクには **qwen2.5:3b** または **qwen2.5:7b** を推奨します。
+### ELYZA Llama-3-JP-8B のインポート方法
+
+ELYZA日本語特化モデルは、Hugging Faceから手動でインポートできます：
+
+**自動インポートスクリプトを使用:**
+```bash
+# スクリプトを実行（約4.9GBダウンロード）
+bash scripts/import_elyza_model.sh
+```
+
+**または手動でインポート:**
+```bash
+# 1. Hugging Face Hubをインストール
+pip3 install huggingface-hub
+
+# 2. GGUFモデルをダウンロード
+python3 << 'EOF'
+from huggingface_hub import hf_hub_download
+model_path = hf_hub_download(
+    repo_id="elyza/Llama-3-ELYZA-JP-8B-GGUF",
+    filename="Llama-3-ELYZA-JP-8B-q4_k_m.gguf"
+)
+print(f"Downloaded: {model_path}")
+EOF
+
+# 3. Modelfileを作成
+cat > ~/Modelfile-elyza << 'MODELFILE'
+FROM <ダウンロードしたGGUFファイルのパス>
+SYSTEM """あなたは誠実で優秀な日本人のアシスタントです。"""
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+MODELFILE
+
+# 4. Ollamaにインポート
+ollama create elyza-jp-8b -f ~/Modelfile-elyza
+```
+
+インポート後、Webインターフェースで「🇯🇵 ELYZA Llama-3 8B」として表示されます。
 
 ### 追加で試せるモデル
 
