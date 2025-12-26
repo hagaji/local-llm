@@ -25,7 +25,8 @@ MODELS=(
     "gemma2:2b"      # Google Gemma 2B - 軽量で高性能
     "llama3.2:3b"    # Meta Llama 3.2 3B - 汎用性が高い
     "qwen2.5:3b"     # Qwen 2.5 3B - 多言語・日本語に強い
-    "elyza:jp8b"     # ELYZA 8B - 日本語特化モデル
+    # Note: ELYZA models are not available in Ollama library
+    # Use qwen2.5 or llama3.2 for Japanese language tasks
 )
 
 # 環境変数で追加モデルを指定可能
