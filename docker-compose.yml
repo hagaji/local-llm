@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  ollama-web:
+    build: .
+    container_name: ollama-local-llm
+    ports:
+      - "8080:8080"    # Flaskアプリ
+      - "11434:11434"  # Ollama API
+    volumes:
+      # モデルデータを永続化
+      - ollama-data:/root/.ollama
+      # 開発時にコードを同期（オプション）
+      - ./app.py:/app/app.py
+      - ./static:/app/static
+    environment:
+      - OLLAMA_HOST=http://localhost:11434
+      - PORT=8080
+      # GPU/パフォーマンス最適化設定
+      - OLLAMA_NUM_PARALLEL=4           # 並列リクエスト数
+      - OLLAMA_MAX_LOADED_MODELS=1      # メモリに保持するモデル数
+      - OLLAMA_FLASH_ATTENTION=true     # Flash Attention有効化（高速化）
+      - OLLAMA_GPU_OVERHEAD=0           # GPU VRAM予約を最小化
+      - OLLAMA_KEEP_ALIVE=5m            # モデルをメモリに保持する時間
+    restart: unless-stopped
+    # リソース制限（必要に応じて調整）
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4.0'                   # CPU使用上限
+        reservations:
+          memory: 4G
+          cpus: '2.0'                   # CPU最小予約
+    # macOS Docker DesktopはGPU直接アクセス非対応のため、
+    # CPUリソースとメモリを最大限活用する設定
+
+volumes:
+  ollama-data:
+    driver: local

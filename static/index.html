@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ローカルLLM チャット</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ローカルLLM チャット</h1>
+            <div class="model-info">
+                <label for="model-select">モデル:</label>
+                <select id="model-select">
+                    <option value="gemma2:2b">Gemma 2B</option>
+                </select>
+                <button id="refresh-models" title="モデルリストを更新">🔄</button>
+            </div>
+        </header>
+
+        <div class="chat-container" id="chat-container">
+            <div class="welcome-message">
+                <h2>ようこそ！</h2>
+                <p>ローカルで動作するLLMとチャットできます。</p>
+                <p>下のテキストボックスに質問を入力してください。</p>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <textarea
+                id="user-input"
+                placeholder="メッセージを入力してください..."
+                rows="3"></textarea>
+            <button id="send-btn" onclick="sendMessage()">
+                <span id="send-text">送信</span>
+                <span id="loading-spinner" class="spinner" style="display: none;">⏳</span>
+            </button>
+        </div>
+
+        <div class="controls">
+            <button id="clear-btn" onclick="clearChat()">チャットをクリア</button>
+            <label>
+                <input type="checkbox" id="stream-toggle" checked>
+                ストリーミング
+            </label>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
